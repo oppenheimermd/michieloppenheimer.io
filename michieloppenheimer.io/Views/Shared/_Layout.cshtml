@@ -1,0 +1,244 @@
+﻿<script type='text/javascript'>
+    //<![CDATA[
+    /*  see: https://www.bloggertipandtrick.net/load-google-fonts-without-render-blocking-css/ */
+    WebFontConfig = {
+        google: {
+            families: ['Open Sans:300,400,700']
+        }
+    };
+
+    (function(d) {
+        var wf = d.createElement('script'),
+            s = d.scripts[0];
+        wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
+        wf.async = true;
+        s.parentNode.insertBefore(wf, s);
+    })(document);
+
+//]]>
+</script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Michiel Oppenheimer</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="/lib/uikit-3.0.0-rc.15/css/uikit.css" />
+        <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" type="text/css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/uikit-3.0.0-rc.15/css/uikit.min.css"
+              asp-fallback-href="/lib/uikit-3.0.0-rc.15/css/uikit.min.css"
+              asp-fallback-test-class="hidden"
+              asp-fallback-test-property="visibility"
+              asp-fallback-test-value="hidden" />
+
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+
+
+<body>
+    <!-- start: uk-offcanvas-content -->
+    <div class="uk-offcanvas-content">
+        <!-- start: template-page -->
+        <div class="template-page">
+            <!-- start: template-page-header-mobile uk-hidden@m -->
+            <div class="template-page-header-mobile uk-hidden@m">
+                <!-- start: uk-navbar-container uk-navbar -->
+                <nav class="uk-navbar-container uk-navbar">
+                    <!-- start: uk-navbar-left -->
+                    <div class="uk-navbar-left">
+                        <a class="uk-navbar-item uk-logo" href="#">
+                            <img src="/images/assets/logo.svg" alt="michieloppenheimer.io" />
+                        </a>
+                    </div>
+                    <!-- end: uk-navbar-left -->
+                    <!-- start: uk-navbar-right -->
+                    <div class="uk-navbar-right">
+                        <a class="uk-navbar-toggle" href="#site-mobile" uk-toggle>
+                            <div uk-navbar-toggle-icon="" class="uk-navbar-toggle-icon uk-icon">
+                            </div>
+                        </a>
+                    </div>
+                    <!-- end: uk-navbar-right -->
+                </nav>
+                <!-- end: uk-navbar-container uk-navbar -->
+            </div>
+            <!-- end: template-page-header-mobile uk-hidden@m -->
+            <!-- start: template-header uk-visible@m -->
+            <div class="template-header uk-visible@m">
+                <!-- start: uk-sticky -->
+                <div uk-sticky="cls-active:uk-sticky; sel-target:.uk-navbar-container; animation:uk-animation-slide-top;">
+                    <!-- start: uk-navbar-container uk-navbar-transparent -->
+                    <div class="uk-navbar-container uk-navbar-transparent">
+                        <!-- start: uk-container uk-container-expand -->
+                        <div class="uk-container uk-container-expand">
+                            <nav uk-navbar="align:center">
+                                <!-- start: uk-navbar-left -->
+                                <div class="uk-navbar-left">
+                                    <a asp-area="" asp-controller="Home" asp-action="Index" class="uk-navbar-item uk-logo">
+                                        <img src="/images/assets/logo.svg" class="el-image" alt="michieloppenheimer.io" uk-img="">
+                                    </a>
+                                </div>
+                                <!-- end: uk-navbar-left -->
+                                <!-- start: uk-navbar-right -->
+                                <div class="uk-navbar-right">
+                                    <ul class="uk-navbar-nav">
+                                        <li><a asp-area="" asp-controller="Blog" asp-action="Index">Home</a></li>
+                                        <li><a asp-area="" asp-controller="Blog" asp-action="About">About</a></li>
+                                        <li><a asp-area="" asp-controller="Blog" asp-action="Contact">Contact</a></li>
+                                    </ul>
+                                </div>
+                                <!-- end: uk-navbar-right -->
+                            </nav>
+                        </div>
+                        <!-- end: uk-container uk-container-expand -->
+                    </div>
+                    <!-- end: uk-navbar-container -->
+                </div>
+                <div class="uk-sticky-placeholder" style="height: 106px; margin: 0px;" hidden=""></div>
+                <!-- end: uk-sticky -->
+            </div>
+            <!-- end: template-header uk-visible@m -->
+
+            <partial name="_CookieConsentPartial" />
+
+            @RenderBody()
+
+
+            <!-- footer -->
+            <!-- start: uk-section-default uk-section -->
+            <div class="uk-section-default uk-section">
+                <!-- start: uk-container -->
+                <div class="uk-container">
+                    <!-- start: uk-margin-large uk-grid-stack -->
+                    <div class="uk-margin-large uk-grid-stack" uk-grid>
+                        <div class="uk-width-1-1@m">
+                            <hr/>
+                        </div>
+                    </div>
+                    <!-- end: uk-margin-large uk-grid-stack -->
+                    
+                    <!-- start: uk-margin -->
+                    <div class="uk-margin" uk-grid>
+                        <div class="uk-width-expand@m">
+                            <div class="uk-margin uk-text-left@s uk-text-center">
+                                <img src="/images/assets/logo.svg" class="el-image" alt="michieloppenheimer.io" uk-img="">
+                            </div>
+                        </div>
+                        <div class="uk-width-expand@m">
+                            <div class="uk-margin uk-text-right@s uk-text-center">
+                                <div class="uk-child-width-auto uk-grid-small uk-flex-right@s uk-flex-center" uk-grid>
+                                    <div style="margin-top: 8px;">
+                                        © <a href="#">Michiel Oppenheimer</a>• 2018• All rights reserved
+                                    </div>
+                                    <div>
+                                        <a uk-icon="icon: twitter" href="https://twitter.com/" target="_blank" class="uk-icon-special uk-icon-button uk-icon">
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a uk-icon="icon: facebook" href="https://facebook.com/" target="_blank" class="uk-icon-special uk-icon-button uk-icon">
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a uk-icon="icon: github" href="https://github.com/" target="_blank" class="uk-icon-special uk-icon-button uk-icon">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end: uk-margin -->
+
+
+                </div>
+                <!-- end: uk-container -->
+            </div>
+            <!-- end: uk-section-default uk-section -->
+            
+
+            <!-- start: uk-modal-full uk-modal -->
+            <div id="site-mobile" class="uk-modal-full uk-modal" uk-modal>
+                <!-- start: uk-modal-dialog uk-modal-body uk-text-center uk-flex uk-height-viewport -->
+                <div class="uk-modal-dialog uk-modal-body uk-text-center uk-flex uk-height-viewport">
+                    <!-- start: uk-modal-close-full uk-close uk-icon -->
+                    <button class="uk-modal-close-full uk-close uk-icon" type="button" uk-close=""></button>
+                    <!-- end: uk-modal-close-full uk-close uk-icon -->
+                    <!-- start: uk-margin-auto-vertical uk-width-1-1 -->
+                    <div class="uk-margin-auto-vertical uk-width-1-1">
+                        <!-- start: uk-child-width-1-1 uk-grid-stack -->
+                        <div class="uk-child-width-1-1 uk-grid-stack" uk-grid>
+                            <div>
+                                <div class="uk-panel" id="0">
+                                    <ul class="uk-nav uk-nav-primary uk-nav-center">
+                                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                                        <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end: uk-child-width-1-1 uk-grid-stack -->
+                    </div>
+                    <!-- end: uk-margin-auto-vertical uk-width-1-1 -->
+                </div>
+                <!-- end: uk-modal-dialog uk-modal-body uk-text-center uk-flex uk-height-viewport -->
+            </div>
+            <!-- end: uk-modal-full uk-modal -->
+        </div>
+        <!-- end: template-page -->
+    </div>
+    <!-- end: uk-offcanvas-content -->
+
+
+
+
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/uikit-3.0.0-rc.15/js/uikit.min.js" asp-append-version="true"></script>
+        <script src="~/lib/uikit-3.0.0-rc.15/js/uikit-icons.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.15/js/uikit.min.js"
+                asp-fallback-src="~/lib/uikit-3.0.0-rc.15/js/uikit.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-S2SN9f0XFbh2t/omvAKIRN0v2CBFKQqwtquHFWt9bllxaZYvk9vTiG0I7uwyBU/E">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.15/js/uikit-icons.min.js"
+                asp-fallback-src="~/lib/uikit-3.0.0-rc.15/js/uikit-icons.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-pt2UltBr/PtYb8Mca371LsdADo1QKBGQc68dxeRELc0lJIYBu9lbV2FyujJhd0e9">
+        </script>
+
+
+
+        <script src="https://wfc-endpoint.azureedge.net/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    <script>
+        $(document).ready(function () {
+            var loc = window.location.pathname;
+            console.log(loc);
+            $('.uk-navbar-nav').find('a').each(function () {
+                $(this).toggleClass('active', $(this).attr('href') == loc);
+            });
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
+    <script>'serviceWorker' in navigator && navigator.serviceWorker.register('/serviceworker')</script>
+</body>
+</html>
