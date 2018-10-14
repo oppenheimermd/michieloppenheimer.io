@@ -1,0 +1,115 @@
+/* 1.   Variables */
+/* 2.   Typography */
+a:hover,
+.uk-link:hover {
+  color: #282828;
+  text-decoration: underline;
+}
+h1,
+.uk-h1,
+h2,
+.uk-h2,
+h3,
+.uk-h3,
+h4,
+.uk-h4,
+h5,
+.uk-h5,
+h6,
+.uk-h6 {
+  color: #282828 !important;
+  font-weight: 100 !important;
+  font-family: 'Open Sans', sans-serif;
+}
+.go-black {
+  color: #282828 !important;
+}
+/*
+    Navigation / header
+*/
+.uk-navbar-nav > li > a,
+.uk-navbar-item,
+.uk-navbar-toggle {
+  font-family: 'Open Sans', sans-serif;
+}
+.uk-navbar-container:not(.uk-navbar-transparent),
+.uk-navbar-container.uk-navbar-transparent.uk-sticky {
+  background: #fff;
+  box-shadow: 0 2px 5px 0 rgba(30, 30, 30, 0.09);
+}
+.uk-navbar-toggle:hover,
+.uk-navbar-toggle:focus,
+.uk-navbar-toggle.uk-open {
+  color: #282828;
+}
+.uk-navbar-nav > li > a {
+  color: #282828;
+  text-transform: uppercase;
+  transition: 0.1s ease-in-out;
+  transition-property: color, background-color;
+}
+.uk-navbar-nav > li > a:active,
+.uk-navbar-nav > li:hover > a,
+.uk-navbar-nav > li > a:focus,
+.uk-navbar-nav > li > a.uk-open,
+.uk-navbar-nav li a.active {
+  color: #ffc308;
+}
+/*
+    Typography
+*/
+.uk-text-background {
+  background-color: #ffc308 !important;
+}
+.uk-heading-hero {
+  font-weight: 100!important;
+}
+/*
+    Butons
+*/
+.uk-close:hover,
+.uk-close:focus {
+  color: #282828;
+}
+.uk-icon {
+  color: #282828;
+}
+.uk-icon-button:focus,
+.uk-icon-button:hover {
+  background-color: #ffc308;
+  color: #fff;
+  outline: 0;
+  background-image: linear-gradient(45deg, #ffc308, #f2cc54);
+}
+.uk-icon-special {
+  color: #ffffff;
+}
+.uk-icon-button {
+  background: #282828;
+}
+/*
+    Page Layout
+*/
+a,
+.uk-link {
+  color: #282828;
+}
+::selection {
+  background: #282828;
+}
+html {
+  color: #282828;
+  font-weight: 100;
+  font-family: 'Open Sans', sans-serif;
+}
+.template-page {
+  position: relative;
+}
+.template-header-placeholder {
+  height: 106px;
+}
+.uk-section-default {
+  background: #fff;
+  background-image: url(../images/assets/section-background-image-lines.svg);
+  background-position-x: 50%;
+}
