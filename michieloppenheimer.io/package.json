@@ -2,8 +2,10 @@
   "name": "michieloppenheimerblog-app",
   "version": "0.0.0",
   "dependencies": {
-    "browserify": "~2.36.1",
-    "less": "~1.5.1"
+    "browserify": "~16.2.2",
+    "less": "~3.8.0",
+    "minimatch": "^3.0.4",
+    "shell-quote": "^1.6.1"
   },
   "exclude": [
     "**/bin",
@@ -14,11 +16,11 @@
     "**/platforms"
   ],
   "devDependencies": {
-    "watchify": "~0.4.1",
-    "catw": "~0.2.0",
+    "watchify": "3.11.0",
+    "catw": "1.0.1",
     "glob": "7.1.3",
-    "clean-css": "^3.2.10",
-    "clean-css-cli": "^4.1.10"
+    "clean-css": "^4.2.0",
+    "clean-css-cli": "^4.2.0"
   },
   "scripts": {
     "watch-css": "catw -c 'lessc -' 'wwwroot/css/site.less' -o wwwroot/css/site.css -v",
