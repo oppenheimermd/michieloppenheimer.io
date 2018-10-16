@@ -21,5 +21,5 @@ Add additional notes about how to deploy this on a live system
 ## Built With
 
 * [Asp.Net Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-2.1) - The web framework used
-* [UiKit](https://getuikit.com/) - UI
+* [UiKit](https://getuikit.com/) - UIKit
 

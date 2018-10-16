@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blog.Data;
+using Blog.Models;
+using Blog.Services;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -50,9 +54,8 @@ namespace michieloppenheimer.io
         {
             services.AddMvc();
 
-            //services.AddSingleton<IUserServices, BlogUserServices>();
-            //services.AddSingleton<IBlogService, FileBlogService>();
-            //services.AddSingleton<IEquipmentService, FileEquipmentService>();
+            services.AddSingleton<IUserServices, BlogUserServices>();
+            services.AddScoped<IBlogService, BlogService>();
             //services.Configure<BlogSettings>(Configuration.GetSection("blog"));
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //services.AddMetaWeblog<MetaWeblogService>();
@@ -141,8 +144,18 @@ namespace michieloppenheimer.io
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //  Register blog context with dependency injection
+            services.AddDbContext<BlogContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("BlogContextString")));
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            //  This provides you a filled config object instance that has values set from the various
+            //  configuration stores. 
+            var userConfig = new UserConfig();
+            Configuration.Bind("UserConfig", userConfig);
+            services.AddSingleton(userConfig);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
