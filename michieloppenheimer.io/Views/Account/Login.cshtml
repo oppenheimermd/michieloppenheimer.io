@@ -1,0 +1,42 @@
+﻿@model Blog.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    ViewData["Description"] = $"Sign in to the website";
+}
+
+
+
+<div class="uk-flex uk-flex-center uk-flex-middle uk-background-muted uk-height-viewport">
+
+    <div class="uk-width-medium uk-padding-small">
+        <form method="post" id="login" aria-labelledby="legend" asp-route-returnUrl="@ViewData["ReturnUrl"]">
+            <div asp-validation-summary="All"></div>
+            <fieldset class="uk-fieldset">
+                <legend class="uk-legend">Login</legend>
+                <div class="uk-margin">
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: user"></span>
+                        <input asp-for="UserName" input class="uk-input uk-form-large" required placeholder="Username" type="text">
+                    </div>
+                </div>
+
+                <div class="uk-margin">
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
+                        <input asp-for="Password" input class="uk-input uk-form-large" required placeholder="Password" type="password">
+                    </div>
+                </div>
+
+                <div class="uk-margin">
+                    <label>
+                        <input asp-for="RememberMe" input class="uk-checkbox">
+                        Keep me logged in
+                    </label>
+                </div>
+                <div class="uk-margin">
+                    <button type="submit" class="uk-button uk-button-primary uk-button-primary uk-button-large uk-width-1-1">LOG IN</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
