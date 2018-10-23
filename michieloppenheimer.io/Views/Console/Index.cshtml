@@ -1,0 +1,91 @@
+﻿@model Blog.Models.Helpers.PagedViewModel<Blog.Models.Post>
+
+    @{
+        ViewData["Title"] = "All Posts";
+        Layout = "~/Views/Shared/_LayoutConsole.cshtml";
+    }
+    @section header
+    {
+        <h1>
+            <span class="ion-speedometer"></span> Dashboard
+        </h1>
+
+        <p>
+            Welcome back, Michiel Oppenheimer
+        </p>
+
+        <ul class="uk-breadcrumb">
+            <li>@Html.ActionLink("Console", "Index")</li>
+        </ul>
+    }
+
+
+    @section Scripts{
+        <script>
+        $(document).ready(function () {
+            var loc = window.location.pathname;
+            $('ul.uk-nav.uk-nav-default').find('a').each(function () {
+                $(this).toggleClass('active', $(this).attr('href') == loc);
+            });
+        });
+        </script>
+    }
+
+
+    <div class="uk-container uk-container-large">
+        <table class="uk-table uk-table-hover uk-table-divider">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Title</th>
+                    <th>Published</th>
+                    <th>Delete</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.PubDate.ToString("d")</td>
+                        <td>@item.Title</td>
+                        <td>@item.IsPublished</td>
+                        <td><a href="/Console/Edit/@item.Id">Edit</a></td>
+                        <td><a href="/Console/DeletePost/@item.Id">Delete</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <!-- pager -->
+        @if (Model.Pager.EndPage > 1)
+        {
+            <ul class="uk-pagination uk-flex-center">
+                @if (Model.Pager.CurrentPage > 1)
+                {
+                    <li>
+                        <a href="~/Console/index">First</a>
+                    </li>
+                    <li>
+                        <a href="~/Console/index?page=@(Model.Pager.CurrentPage - 1)"><span uk-pagination-previous></span></a>
+                    </li>
+                }
+
+                @for (var pge = Model.Pager.StartPage; pge <= Model.Pager.EndPage; pge++)
+                {
+                    <li class="@(pge == Model.Pager.CurrentPage ? "uk-active" : "")">
+                        <a href="~/Console/index?page=@pge">@pge</a>
+                    </li>}
+
+                @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                {
+                    <li>
+                        <a href="~/Console/index?page=@(Model.Pager.CurrentPage + 1)"><span uk-pagination-next></span></a>
+                    </li>
+                    <li>
+                        <a href="~/Console/index?page=@(Model.Pager.TotalPages)">Last</a>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+

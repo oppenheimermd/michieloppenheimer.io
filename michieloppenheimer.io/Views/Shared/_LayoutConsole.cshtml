@@ -1,0 +1,204 @@
+﻿@inject WebManifest manifest
+@{
+    var host = Context.Request.Scheme + "://" + Context.Request.Host;
+}
+<!DOCTYPE html>
+<html lang="en-GB">
+<head prefix="og: http://ogp.me/ns#">
+    <meta charset="utf-8" />
+    <title>WheelsFoodCook @ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet" />
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/uikit-3.0.0-rc.15/css/uikit.css" />
+        <link rel="stylesheet" href="~/css/site.min.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/uikit-3.0.0-rc.15/css/uikit.min.css"
+              asp-fallback-href="~/lib/uikit-3.0.0-rc.15/css/uikit.min.cs"
+              asp-fallback-test-class="hidden"
+              asp-fallback-test-property="visibility"
+              asp-fallback-test-value="hidden" />
+
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+
+</head>
+<body>
+
+    <!-- start: uk-navbar-container -->
+    <div uk-sticky="animation: uk-animation-slide-top" class="uk-navbar-container">
+        <div class="uk-container uk-container-expand">
+            <nav uk-navbar>
+                <!-- start: uk-navbar-left -->
+                <div class="uk-navbar-left">
+                    <a id="sidebar_toggle" class="uk-navbar-toggle" uk-navbar-toggle-icon></a>
+                    <a href="#" class="uk-navbar-item uk-logo">
+                        WheelsFoodCook - Admin Console
+                    </a>
+                </div>
+                <!-- end: uk-navbar-left -->
+                <!-- start: uk-navbar-right uk-light -->
+                <div class="uk-navbar-right uk-light">
+                    <!-- start: uk-navbar-nav -->
+                    <ul class="uk-navbar-nav">
+                        <li class="uk-active">
+                            <a href="#">Èrik &nbsp;<span class="ion-ios-arrow-down"></span></a>
+                            <div uk-dropdown="pos: bottom-right; mode: click; offset: -17;">
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    <li class="uk-nav-header">Options</li>
+                                    <li>
+                                        <a href="#">Edit Profile</a>
+                                    </li>
+                                    <li class="uk-nav-header">Actions</li>
+                                    <li><a href="#">Lock</a></li>
+                                    @{
+                                        string path = Context.Request.Path;
+
+                                        if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li><a asp-controller="Blog" asp-action="Edit">New post</a></li>
+                                            <li><a href="~/logout/" title="Sign out as administrator">Sign out</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li><a href="~/login/?returnUrl=@path" rel="nofollow" title="Sign in as administrator">Sign in</a></li>
+                                        }
+                                    }
+
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- end: uk-navbar-nav -->
+                </div>
+                <!-- end: uk-navbar-right uk-light -->
+            </nav>
+        </div>
+    </div>
+    <!-- end: uk-navbar-container -->
+
+    <div class="uk-sticky-placeholder"></div>
+
+    <!-- end: tm-sidebar-left uk-background-default -->
+    <div id="sidebar" class="tm-sidebar-left uk-background-default">
+        <!-- start: full-width-center -->
+        <div class="full-width-center">
+            <!-- start: user -->
+            <div class="user">
+                <img id="avatar" width="100" class="uk-border-circle" src="../images/avatar.jpg" />
+                <div class="uk-margin-top"></div>
+                <div id="name" class="uk-text-truncate">Michiel Oppenhimer</div>
+                <div id="email" class="uk-text-truncate">ConsoleTVs@gmail.com</div>
+            </div>
+            <!-- end: user -->
+            <br />
+        </div>
+        <!-- end: full-width-center -->
+        <!-- start: uk-nav uk-nav-default -->
+        <ul class="admin-sidebar-links uk-nav uk-nav-default">
+            <li class="uk-nav-header">
+                Reports
+            </li>
+            <li>@Html.ActionLink("New Post", "CreatePost", "Console")</li>
+            <li>@Html.ActionLink("Posts", "Index", "Console")</li>
+            <li>@Html.ActionLink("Unpublished Comments", "CommentsUnpublished", "Console")</li>
+            <li>@Html.ActionLink("Add Equipment", "EditEquipment", "Console")</li>
+            <li>@Html.ActionLink("All Equipment", "EquipmentIndex", "Console")</li>
+            <li><a href="tables.html">Tables</a></li>
+
+            <li class="uk-nav-header">
+                Pages
+            </li>
+            <li>
+                <a href="account/logintest">Login</a>
+            </li>
+            <li><a href="register.html">Register</a></li>
+            <li><a href="404.html">404</a></li>
+        </ul>
+        <!-- end: uk-nav uk-nav-default -->
+    </div>
+    <!-- end: tm-sidebar-left uk-background-default -->
+    <!-- end: content-padder content-background -->
+    <div class="content-padder content-background">
+
+        <!-- end: uk-section-small uk-section-default -->
+        <div class="uk-section-small uk-section-default header add-btm-shadow">
+            <!-- end: uk-container uk-container-large -->
+            <div class="uk-container uk-container-large">
+                @RenderSection("header", required: true)
+            </div>
+            <!-- end: uk-container uk-container-large -->
+        </div>
+        <!-- end: uk-section-small uk-section-default -->
+        <!-- end: uk-section-large -->
+        <div class="uk-section-large">
+            @RenderBody()
+        </div>
+        <!-- end: uk-section-large -->
+
+    </div>
+    <!-- end: content-padder content-background -->
+
+    <environment include="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"
+                crossorigin="anonymous"
+                integrity="sha384-bPV3mA2eo3edoq56VzcPBmG1N1QVUfjYMxVIJPPzyFJyFZ8GFfN7Npt06Zr23qts">
+        </script>
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"
+                crossorigin="anonymous"
+                integrity="sha384-ZoaMbDF+4LeFxg6WdScQ9nnR1QC2MIRxA1O9KWEXQwns1G8UNyIEZIQidzb0T1fo">
+        </script>
+        <script src="~/lib/uikit-3.0.0-rc.15/js/uikit.js" asp-append-version="true"></script>
+        <script src="~/lib/uikit-3.0.0-rc.15/js/uikit-icons.min.js" asp-append-version="true"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"
+                crossorigin="anonymous"
+                integrity="sha384-kxrh5D1Y4/UUilbzWQVzWKHpYwFGsB/TNcIDzWgUrV2bS0HzGDEdFq/dipr3Mgrd">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.12/jquery.transit.min.js"
+                crossorigin="anonymous"
+                integrity="sha384-Yt0SloQYggT/O72oHzbQvYgyJ8k+ja4adGsAlj9oIvpN45zNB7/dMcUM+0dSieaY">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"
+                crossorigin="anonymous"
+                integrity="sha384-wqY0Wddj/9rsgpTQ0qEtvkb/VMP+u3Gt7/MhRiCGMt5eacRnOnIqDG6or9xvmleu">
+        </script>
+        <script src="~/js/console-layout-script.js"></script>
+        <script src="~/js/site.js"></script>
+
+    </environment>
+
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"
+                crossorigin="anonymous"
+                integrity="sha384-bPV3mA2eo3edoq56VzcPBmG1N1QVUfjYMxVIJPPzyFJyFZ8GFfN7Npt06Zr23qts">
+        </script>
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"
+                crossorigin="anonymous"
+                integrity="sha384-ZoaMbDF+4LeFxg6WdScQ9nnR1QC2MIRxA1O9KWEXQwns1G8UNyIEZIQidzb0T1fo">
+        </script>
+        <script src="~/lib/uikit-3.0.0-rc.15/js/uikit.js" asp-append-version="true"></script>
+        <script src="~/lib/uikit-3.0.0-rc.15/js/uikit-icons.min.js" asp-append-version="true"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"
+                crossorigin="anonymous"
+                integrity="sha384-kxrh5D1Y4/UUilbzWQVzWKHpYwFGsB/TNcIDzWgUrV2bS0HzGDEdFq/dipr3Mgrd">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.12/jquery.transit.min.js"
+                crossorigin="anonymous"
+                integrity="sha384-Yt0SloQYggT/O72oHzbQvYgyJ8k+ja4adGsAlj9oIvpN45zNB7/dMcUM+0dSieaY">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"
+                crossorigin="anonymous"
+                integrity="sha384-wqY0Wddj/9rsgpTQ0qEtvkb/VMP+u3Gt7/MhRiCGMt5eacRnOnIqDG6or9xvmleu">
+        </script>
+
+        <script src="~/js/console-layout-script.js"></script>
+        <script src="~/js/site.js"></script>
+    </environment>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

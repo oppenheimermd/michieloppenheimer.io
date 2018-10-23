@@ -74,9 +74,6 @@ namespace michieloppenheimer.io.Migrations
 
                     b.Property<string>("Slug");
 
-                    b.Property<string>("Tags")
-                        .HasMaxLength(200);
-
                     b.Property<string>("Title")
                         .IsRequired();
 
@@ -104,6 +101,23 @@ namespace michieloppenheimer.io.Migrations
                     b.ToTable("PostMedia");
                 });
 
+            modelBuilder.Entity("Blog.Models.PostTag", b =>
+                {
+                    b.Property<int>("TagId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PostId");
+
+                    b.Property<string>("TagName");
+
+                    b.HasKey("TagId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("PostTag");
+                });
+
             modelBuilder.Entity("Blog.Models.Comment", b =>
                 {
                     b.HasOne("Blog.Models.Post")
@@ -114,8 +128,16 @@ namespace michieloppenheimer.io.Migrations
 
             modelBuilder.Entity("Blog.Models.PostMedia", b =>
                 {
-                    b.HasOne("Blog.Models.Post")
+                    b.HasOne("Blog.Models.Post", "Post")
                         .WithMany("Media")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Blog.Models.PostTag", b =>
+                {
+                    b.HasOne("Blog.Models.Post", "Post")
+                        .WithMany("Tags")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

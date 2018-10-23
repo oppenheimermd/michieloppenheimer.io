@@ -1,0 +1,62 @@
+﻿@model Post
+@{
+    var isNew = string.IsNullOrEmpty(Model.Title);
+}
+
+<div asp-validation-summary="All"></div>
+<input type="hidden" asp-for="@Model.Id" />
+
+<div class="uk-margin">
+    <input asp-for="@Model.Title" class="uk-input" required placeholder="Title of blog post" aria-describedby="desc_title" />
+    <span class="desc" id="desc_title">The title as it appears on the website</span>
+</div>
+
+<div class="uk-margin">
+    <input asp-for="@Model.Slug" class="uk-input" placeholder="Slug(URL name) for this entry" aria-describedby="desc_slug" />
+    <span class="desc" id="desc_slug">The part of the URL that identifies this blog post</span>
+</div>
+
+@if (Model.Tags.Any())
+{
+    <div class="uk-margin">
+        <input type="text" name="categories" class="uk-input" placeholer="Tags" id="categories" value="@string.Join(", ", Model.Tags.Select(x => x.TagName))" aria-describedby="desc_categories" />
+        <span class="desc" id="desc_categories">A comma separated list of keywords</span>
+    </div>
+}
+else
+{
+    <div class="uk-margin">
+        <input type="text" name="categories" class="uk-input" placeholer="Tags" id="categories" value="" aria-describedby="desc_categories" />
+        <span class="desc" id="desc_categories">A comma separated list of keywords</span>
+    </div>
+}
+
+<div class="uk-margin">
+    <textarea asp-for="@Model.Excerpt" class="uk-textarea" rows="3" placeholder="Short description of blog post" aria-describedby="desc_excerpt">@Model.Excerpt</textarea>
+    <span class="desc" id="desc_excerpt">A brief description of the content of the post(30 chars max)</span>
+    <br />
+    <span uk-icon="info"></span>
+    <span class="uk-form-success uk-form-width-medium" id="chars-remaining"> 200</span> characters remaining
+</div>
+
+
+<div class="uk-margin">
+    <textarea asp-for="@Model.Content" class="uk-textarea" rows="20" aria-label="Content">@Model.Content</textarea>
+</div>
+
+
+<div class="uk-margin">
+    <input type="submit" value="Save" title="Save the post" class="uk-button uk-button-primary uk-button-primary" />
+</div>
+
+<div class="uk-margin">
+    <input asp-for="@Model.IsPublished" />
+    <label asp-for="@Model.IsPublished">Is published</label>
+</div>
+
+
+
+@if (!isNew)
+{
+    <input type="submit" value="Delete..." class="delete" title="Delete the post..." asp-action="DeletePost" asp-route-id="@Model.Id" />
+}
