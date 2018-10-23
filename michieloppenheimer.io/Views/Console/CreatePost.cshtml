@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "New Post";
+    Layout = "~/Views/Shared/_LayoutConsole.cshtml";
+}
+
+@section header
+    {
+    <h1>
+        <span class="ion-speedometer"></span> New Post
+    </h1>
+
+    <p>
+        Post : SOME TEXT
+    </p>
+
+    <ul class="uk-breadcrumb">
+        <li><a href="index.html">Home</a></li>
+        <li><span href="#">Dashboard</span></li>
+    </ul>
+
+    <link rel="stylesheet" type="text/css" href="~/lib/prism/prism.css " />
+}
+
+<!-- start: uk-section-secondary -->
+<div class="uk-section-default">
+    <!-- start: uk-position-relative -->
+    <div class="uk-position-relative">
+        <!-- start: uk-container uk-container-large -->
+        <div class="uk-container uk-container-large">
+            <fieldset class="uk-fieldset">
+                <legend class="uk-legend">New / Edit Blog Post</legend>
+                <form method="post" id="edit" class="container" enctype="multipart/form-data" asp-controller="Console" asp-action="CreatePost">
+                    <partial name="CreateEdit.cshtml" />
+                </form>
+            </fieldset>
+
+            <br />
+            <br />
+            <br />
+            <a href="~/Console/Posts"> >> Back</a>
+            <br />
+            <br />
+
+        </div>
+    </div>
+    <!-- end: uk-position-relative -->
+</div>
+<!-- end: uk-section-secondary -->
+
+@section Scripts {
+    <script src="~/lib/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script src="~/js/admin.js" async></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="~/lib/prism/prism.js"></script>
+
+    <script>
+
+
+    $( document ).ready(function() {
+        //  Excerpt input
+        const inputExcerpt = $('#Excerpt').val();
+        var inputExcerptLength = parseInt(inputExcerpt.length);
+
+        const maxLength = parseInt(200);
+        var charsRemaing = parseInt(maxLength - inputExcerptLength);
+
+        //  Set info box
+        $('#chars-remaining').text(charsRemaing);
+
+
+        //  http://geoffmuskett.com/really-simple-jquery-character-countdown-in-textarea/
+        $('#Excerpt').keyup(function() {
+            var length = $(this).val().length;
+            length = maxLength-length;
+            $('#chars-remaining').text(length);
+        });
+
+    });
+
+    </script>
+}

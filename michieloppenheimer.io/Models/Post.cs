@@ -33,11 +33,9 @@ namespace Blog.Models
 
         public bool HasCoverPhoto { get; set; } = false;
 
-        [StringLength(200)]
-        public string Tags { get; set; }
-
         public IList<Comment> Comments { get; set; } = new List<Comment>();
 
+        public ICollection<PostTag> Tags { get; set; } = new List<PostTag>();
 
         public List<PostMedia> Media { get; set; } = new List<PostMedia>();
 

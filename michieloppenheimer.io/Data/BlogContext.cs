@@ -20,10 +20,12 @@ namespace Blog.Data
             modelBuilder.Entity<Post>().ToTable("Post");
             modelBuilder.Entity<Comment>().ToTable("Comment");
             modelBuilder.Entity<PostMedia>().ToTable("PostMedia");
+            modelBuilder.Entity<PostTag>().ToTable("PostTag");
         }
 
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<PostMedia> PostMedias { get; set; }
+        public DbSet<PostTag> PostTags { get; set; }
     }
 }

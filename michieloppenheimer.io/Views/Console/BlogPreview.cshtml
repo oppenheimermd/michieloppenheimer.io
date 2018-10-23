@@ -1,0 +1,119 @@
+﻿@model Post
+@{
+    var isNew = string.IsNullOrEmpty(Model.Title);
+    ViewData["Title"] = "Preview Post: " + (Model.Title ?? "new post");
+    Layout = "~/Views/Shared/_LayoutConsole.cshtml";
+    bool isCodePreview = Model.Content.Contains("</code>");
+}
+
+@section header
+    {
+    <h1>
+        <span class="ion-speedometer"></span> Preview Post
+    </h1>
+
+    <p>
+        Post : @Model.Title
+    </p>
+
+    <ul class="uk-breadcrumb">
+        <li><a href="index.html">Home</a></li>
+        <li><span href="">Dashboard</span></li>
+    </ul>
+}
+
+<!-- start: uk-section-secondary -->
+<div class="uk-section-default">
+    <!-- start: uk-container uk-container-large -->
+    <div class="uk-container uk-container-large">
+        <!-- start: uk-grid-large uk-grid-stack -->
+        <div class="uk-grid-large uk-grid-stack" uk-grid>
+            <!-- start: uk-width-expand@m uk-first-column -->
+            <div class="uk-width-expand@m uk-first-column">
+                <!-- start: uk-article -->
+                <article class="uk-article" data-permalink="" typeof="Article">
+                    <meta property="name" content="@Model.Title">
+                    <meta property="author" typeof="Person" content="wheelsfoodcook">
+                    <meta property="dateModified" content="@Model.LastModified.ToString("s")">
+                    <meta property="datePublished" content="@Model.PubDate.ToString("s")">
+                    <meta class="uk-margin-remove-adjacent" property="articleSection" content="Blog">
+
+
+                    <div class="uk-margin-large-bottom" property="image" typeof="ImageObject">
+                        <img src="@Model.CoverPhotoUrl()" alt="" property="url">
+                    </div>
+
+                    <!-- start: uk-margin-medium-bottom uk-container uk-container-small -->
+                    <div class="uk-margin-medium-bottom uk-container uk-container-small">
+                        <h1 class="uk-article-title uk-margin-remove-top">@Model.Title</h1>
+                        <!-- start: uk-subnav uk-subnav-divider -->
+                        <ul class="uk-subnav uk-subnav-divider">
+                            <li><time datetime="@Model.PubDate.ToString("s")">@Model.PubDate.ToString("MMM d, yyyy")</time></li>
+                            <li><span>WheelsFoodCook</span></li>
+                        </ul>
+                        <!-- end: uk-subnav uk-subnav-divider -->
+                    </div>
+                    <!-- end: uk-margin-medium-bottom uk-container uk-container-small -->
+                    
+
+                    <!-- start: uk-container uk-container-small -->
+                    <div class="uk-container uk-container-small">
+                        <div itemprop="articleBody mainEntityOfPage">
+                            
+                            @if (isCodePreview)
+                            {
+                                <link rel="preload" href="~/lib/prism/prism.css" as="style" />
+                                <script src="~/lib/prism/prism.js" async defer></script>
+                            }
+
+                            @Html.Raw(Model.RenderContent())
+                        </div>
+                    </div>
+                    <!-- end: uk-container uk-container-small -->
+                    
+
+                    <!-- start: uk-container uk-container-small -->
+                    <div class="uk-container uk-container-small">
+                        <div itemscope itemtype="http://schema.org/Recipe">
+                            <h4 itemprop="name">@Model.Title</h4>
+                            <img itemprop="image" src="@Model.PostCoverPhoto" class="image-itemprop">
+                        </div>
+                    </div>
+                    <!-- end: uk-container uk-container-small -->
+
+
+                </article>
+                <!-- end: uk-article -->
+            </div>
+            <!-- e: uk-width-expand@m uk-first-column -->
+        </div>
+        <!-- end: uk-grid-large uk-grid-stack -->
+    </div>
+    <!-- end: uk-container uk-container-large -->
+</div>
+<!-- end: uk-section-secondary -->
+
+
+<!-- start: uk-section-secondary -->
+<div class="uk-section-default">
+    <!-- start: uk-position-relative -->
+    <div class="uk-position-relative">
+        <!-- start: uk-container uk-container-large -->
+        <div class="uk-container uk-container-large">
+            <br />
+            <br />
+            <br />
+            <a href="~/Console/Posts"> >> Back</a>
+            <br />
+            <br />
+
+        </div>
+    </div>
+    <!-- end: uk-position-relative -->
+</div>
+<!-- end: uk-section-secondary -->
+
+@section Scripts {
+    <script src="~/js/site.js" async></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+}

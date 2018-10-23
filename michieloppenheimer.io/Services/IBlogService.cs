@@ -8,6 +8,8 @@ namespace Blog.Services
 {
     public interface IBlogService
     {
+        //  Queries
+
         Task<IEnumerable<Post>> GetPostsAsync(int count, int skip = 0);
 
         Task<IQueryable<Post>> GetAllPostAsync();
@@ -16,10 +18,35 @@ namespace Blog.Services
 
         Task<Post> GetPostByIdAsync(int id);
 
-        Task<bool> SavePostAsync(Post post);
+        Task<IQueryable<PostMedia>> GetPostMediaByPostAsync(int postId);
 
-        Task DeletePostAsync(int id);
+        Task<List<PostTag>> GetPostTags(int postId);
 
-        Task<bool> EditPost(int id, Post post);
+        //  Create / Update
+
+        /// <summary>
+        /// Persistence, save blog to data store
+        /// </summary>
+        /// <param name="post"></param>
+        /// <returns></returns>
+        Task SavePostAsync(Post post);
+
+        Task UpdatePostAsync(Post post);
+
+        Task<Post> SaveFilesToDiskAsync(Post post);
+
+        Task<(List<PostMedia> newMedia, List<PostMedia> oldMedia)> UpdatePostMediaAsync(Post post, IReadOnlyCollection<PostMedia> oldMedia);
+
+        Task SavePostTagAsync(PostTag postTag);
+
+        Task EditPost(int id, Post post);
+
+        //  Not tested yet
+        //Task DeletePostAsync(int id);
+
+        //  Delete
+
+        Task DeletePostTagAsync(int tagId);
+
     }
 }
