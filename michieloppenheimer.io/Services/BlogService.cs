@@ -21,6 +21,10 @@ namespace Blog.Services
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly string _folder;
         private readonly string _filesFolder;
+        /// <summary>
+        /// Base directory location for medai
+        /// </summary>
+        private readonly string _fileLocationPrefix;
 
         public BlogService(BlogContext blogContext, IHttpContextAccessor contextAccessor, IHostingEnvironment env)
         {
@@ -28,6 +32,7 @@ namespace Blog.Services
             _blogContext = blogContext;
             _folder = Path.Combine(env.WebRootPath, "PostMedia");
             _filesFolder = Path.Combine(env.WebRootPath, "PostMedia");
+            _fileLocationPrefix = "/PostMedia/";
         }
 
         //  Queries
@@ -172,7 +177,25 @@ namespace Blog.Services
                 await writer.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
             }
 
-            return "/PostMedia/" + relative;
+            return _fileLocationPrefix + relative;
+        }
+
+        private async Task<string> SaveCoverPhotoFileAsync(byte[] bytes, string fileName)
+        {
+            var ext = Path.GetExtension(fileName);
+            var name = Path.GetFileNameWithoutExtension(fileName);
+
+            var relative = $"{name}{ext}";
+            var absolute = Path.Combine(_folder, relative);
+            var dir = Path.GetDirectoryName(absolute);
+
+            Directory.CreateDirectory(dir);
+            using (var writer = new FileStream(absolute, FileMode.CreateNew))
+            {
+                await writer.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
+            }
+
+            return _fileLocationPrefix + relative;
         }
 
         /// <summary>
@@ -214,46 +237,6 @@ namespace Blog.Services
             return post;
         }
 
-
-        /*public async Task SaveFilesToDiskAsync(Post post)
-        {
-            var imgRegex = new Regex("<img[^>].+ />", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-            var base64Regex = new Regex("data:[^/]+/(?<ext>[a-z]+);base64,(?<base64>.+)", RegexOptions.IgnoreCase);
-
-            foreach (Match match in imgRegex.Matches(post.Content))
-            {
-                var doc = new XmlDocument();
-
-                try
-                {
-                    doc.LoadXml("<root>" + match.Value + "</root>");
-
-                    var img = doc.FirstChild.FirstChild;
-                    var srcNode = img.Attributes["src"];
-                    var fileNameNode = img.Attributes["data-filename"];
-
-                    // The HTML editor creates base64 DataURIs which we'll have to convert to image files on disk
-                    if (srcNode != null && fileNameNode != null)
-                    {
-                        var base64Match = base64Regex.Match(srcNode.Value);
-                        if (base64Match.Success)
-                        {
-                            byte[] bytes = Convert.FromBase64String(base64Match.Groups["base64"].Value);
-                            srcNode.Value = await SaveFileAsync(bytes, fileNameNode.Value).ConfigureAwait(false);
-
-                            img.Attributes.Remove(fileNameNode);
-                            post.Content = post.Content.Replace(match.Value, img.OuterXml);
-                        }
-                    }
-                }
-                catch (System.Xml.XmlException err)
-                {
-                    var errMsg = err.ToString();
-                }
-
-            }
-
-        }*/
 
         /// <summary>
         /// Updates post media files <see cref="PostMedia"/>
@@ -313,7 +296,7 @@ namespace Blog.Services
                 }
             }
 
-            if (deleteList.Any())
+            if (!deleteList.Any()) return (newPostMedia, oldMediaFiles);
             {
                 //  delete each item from serve
                 foreach (var itm in deleteList)
@@ -345,13 +328,26 @@ namespace Blog.Services
 
         }
 
+        public async Task<string> SaveCoverPhotoAsync(string escapedTitle, IFormFile coverPhoto)
+        {
+            var newFileName = SetCoverPhotoNames(escapedTitle);
+            using (var ms = new MemoryStream())
+            {
+                coverPhoto.CopyTo(ms);
+                var fileBytes = ms.ToArray();
+                newFileName = await SaveCoverPhotoFileAsync(fileBytes, newFileName).ConfigureAwait(false);
+            }
+
+            return newFileName;
+        }
+
         //  Delete
 
         public async Task DeletePostTagAsync(int tagId)
         {
             var postTag = await _blogContext.PostTags
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.TagId == tagId);
+                .FirstOrDefaultAsync(x => x.Id == tagId);
 
             if (postTag != null)
             {
@@ -391,11 +387,24 @@ namespace Blog.Services
 
         //  Helper methods
 
-        public string SetPostMediaName(PostMedia media)
+        private string SetPostMediaName(PostMedia media)
         {
             var ext = Path.GetExtension(media.MedialUrl);
             var name = Path.GetFileNameWithoutExtension(media.MedialUrl);
             var fileName = name + ext;
+            return fileName;
+        }
+
+        //  Helpers
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="escapedTitle"></param>
+        /// <returns></returns>
+        private string SetCoverPhotoNames(string escapedTitle)
+        {
+            var fileName = "cover-photo-" + escapedTitle + ".jpg";
             return fileName;
         }
 

@@ -174,6 +174,39 @@ namespace Blog.Models.Helpers
             var textInfo = new CultureInfo("en-GB", false).TextInfo;
             return textInfo.ToTitleCase(input);
         }
+
+        public static string ShortenAndFormatText(string val, int maxlen)
+        {
+            const string postFix = "...";
+            //var postFixLength = postFix.Length;
+
+            if (string.IsNullOrEmpty(val)) return val;
+            //var maxLength = (val.Length - maxlen);
+
+            if (val.Length > maxlen)
+            {
+                var truncateFirst = Truncate(val, (maxlen - postFix.Length));
+                var truncateLast = truncateFirst + postFix;
+                return truncateLast;
+            }
+            else
+            {
+                return val;
+            }
+        }
+
+        /// <summary>
+        /// Truncate a string to a set size. 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="maxLength"></param>
+        /// <returns></returns>
+        /// public static string Truncate(this string value, int maxLength)
+        private static string Truncate(string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength);
+        }
     }
 
     public static class ConstHelper
@@ -265,4 +298,5 @@ namespace Blog.Models.Helpers
             }
         }
     }
+
 }

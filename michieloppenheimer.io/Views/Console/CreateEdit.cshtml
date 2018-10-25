@@ -39,6 +39,26 @@ else
     <span class="uk-form-success uk-form-width-medium" id="chars-remaining"> 200</span> characters remaining
 </div>
 
+@{
+    if (isNew)
+    {
+        <div class="uk-margin">
+            <input asp-for="@Model.PostCoverPhoto" class="uk-input" type="file" placeholder="Cover photo" aria-describedby="desc_coverphoto"/>
+            <span class="desc_coverphoto" id="desc_title">Add Cover photo for this post</span>
+        </div>
+    }
+    else
+    {
+        <div class="uk-margin">
+            <a href="/Console/EditPostCoverphoto?id=@Model.Id">
+                <span>Edit / Delete Photo</span>
+                <br />
+                <img src="@Model.CoverPhotoUrl()" style="max-width: 300px;"/>
+            </a>
+        </div>
+    }
+}
+
 
 <div class="uk-margin">
     <textarea asp-for="@Model.Content" class="uk-textarea" rows="20" aria-label="Content">@Model.Content</textarea>

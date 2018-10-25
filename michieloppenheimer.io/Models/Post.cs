@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 // ReSharper disable once CheckNamespace
 namespace Blog.Models
 {
     public class Post
     {
-        [Required]
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -24,14 +22,20 @@ namespace Blog.Models
         [Required]
         public string Content { get; set; }
 
-
+        [Required]
         public DateTime PubDate { get; set; } = DateTime.UtcNow;
 
+        [Required]
         public DateTime LastModified { get; set; } = DateTime.UtcNow;
 
         public bool IsPublished { get; set; } = false;
 
-        public bool HasCoverPhoto { get; set; } = false;
+        public string PostCoverPhoto { get; set; } = String.Empty;
+
+        public bool PostHasCoverPhoto()
+        {
+            return (!string.IsNullOrEmpty(PostCoverPhoto));
+        }
 
         public IList<Comment> Comments { get; set; } = new List<Comment>();
 
@@ -39,12 +43,9 @@ namespace Blog.Models
 
         public List<PostMedia> Media { get; set; } = new List<PostMedia>();
 
-        public string PostCoverPhoto { get; set; }
-
-
         public string CoverPhotoUrl()
         {
-            return $"/Posts/files/{PostCoverPhoto}";
+            return $"/PostMedia/{PostCoverPhoto}";
         }
 
         public string GetLink()

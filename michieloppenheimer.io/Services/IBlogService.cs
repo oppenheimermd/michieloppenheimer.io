@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Models;
+using Microsoft.AspNetCore.Http;
 
 // ReSharper disable once CheckNamespace
 namespace Blog.Services
@@ -40,6 +41,8 @@ namespace Blog.Services
         Task SavePostTagAsync(PostTag postTag);
 
         Task EditPost(int id, Post post);
+
+        Task<string> SaveCoverPhotoAsync(string postId, IFormFile coverPhoto);
 
         //  Not tested yet
         //Task DeletePostAsync(int id);

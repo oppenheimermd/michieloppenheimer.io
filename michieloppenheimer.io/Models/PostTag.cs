@@ -8,7 +8,7 @@ namespace Blog.Models
     public class PostTag
     {
         [Key]
-        public int TagId { get; set; }
+        public int Id { get; set; }
 
         [ForeignKey("Post")]
         public int PostId { get; set; }

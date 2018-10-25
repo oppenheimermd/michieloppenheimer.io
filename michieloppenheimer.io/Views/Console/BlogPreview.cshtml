@@ -20,7 +20,10 @@
         <li><a href="index.html">Home</a></li>
         <li><span href="">Dashboard</span></li>
     </ul>
+
+    <link rel="stylesheet" type="text/css" href="~/lib/prism/prism.css " />
 }
+
 
 <!-- start: uk-section-secondary -->
 <div class="uk-section-default">
@@ -54,15 +57,13 @@
                         <!-- end: uk-subnav uk-subnav-divider -->
                     </div>
                     <!-- end: uk-margin-medium-bottom uk-container uk-container-small -->
-                    
-
                     <!-- start: uk-container uk-container-small -->
                     <div class="uk-container uk-container-small">
                         <div itemprop="articleBody mainEntityOfPage">
-                            
+
                             @if (isCodePreview)
                             {
-                                <link rel="preload" href="~/lib/prism/prism.css" as="style" />
+                                <link rel="" href="~/lib/prism/prism.css" as="style" />
                                 <script src="~/lib/prism/prism.js" async defer></script>
                             }
 
@@ -70,8 +71,6 @@
                         </div>
                     </div>
                     <!-- end: uk-container uk-container-small -->
-                    
-
                     <!-- start: uk-container uk-container-small -->
                     <div class="uk-container uk-container-small">
                         <div itemscope itemtype="http://schema.org/Recipe">
@@ -92,8 +91,6 @@
     <!-- end: uk-container uk-container-large -->
 </div>
 <!-- end: uk-section-secondary -->
-
-
 <!-- start: uk-section-secondary -->
 <div class="uk-section-default">
     <!-- start: uk-position-relative -->
@@ -116,4 +113,5 @@
 @section Scripts {
     <script src="~/js/site.js" async></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="~/lib/prism/prism.js"></script>
 }

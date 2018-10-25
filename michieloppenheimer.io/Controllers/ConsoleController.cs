@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml;
 using Blog.Data;
 using Blog.Models;
 using Blog.Models.Helpers;
 using Blog.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Blog.Models.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 // ReSharper disable once CheckNamespace
@@ -19,12 +16,14 @@ namespace Web.Controllers
     public class ConsoleController : Controller
     {
         private readonly IBlogService _blog;
-        private BlogContext _blogContext;
+        private readonly BlogContext _blogContext;
+        private readonly int _excerptMaxLength;
 
         public ConsoleController(IBlogService blog, BlogContext blogContext)
         {
             _blog = blog;
             _blogContext = blogContext;
+            _excerptMaxLength = 280;
         }
 
         public async Task<IActionResult> Index(int? page)
@@ -81,21 +80,19 @@ namespace Web.Controllers
             newPost.PubDate = DateTime.UtcNow;
             newPost.IsPublished = post.IsPublished;
             newPost.Content = post.Content.Trim();
-            newPost.Excerpt = post.Excerpt.Trim();
+            newPost.Excerpt = PostHelpers.ShortenAndFormatText(post.Excerpt.Trim(), _excerptMaxLength);
             newPost.LastModified = DateTime.UtcNow;
-
-            // only call if new post, we can check is post.PostCoverPhoto
-            /*if (string.IsNullOrEmpty(existing.PostCoverPhoto))
+            //  Do we have a cover photo?
+            //  Check the file length and don't bother attempting to read it if the file contains no content.
+            if (HttpContext.Request.Form.Files.Count != 0)
             {
                 var newCoverPhoto = HttpContext.Request.Form.Files[0];
-                if (newCoverPhoto.Length <= 0)
+                //  yes
+                if (newCoverPhoto.Length > 0)
                 {
-                    ModelState.AddModelError("", "Cover photo missing!");
-                    return View("Edit", post);
+                    newPost.PostCoverPhoto = await _blog.SaveCoverPhotoAsync(newPost.Slug, newCoverPhoto);
                 }
-                existing.PostCoverPhoto = _blog.SetCoverPhotoNames(existing.Id);
-                await _blog.SaveCoverPhoto(existing.Id, newCoverPhoto);
-            }*/
+            }
 
 
             //  1.  We need to save post to db first to get id
@@ -104,6 +101,7 @@ namespace Web.Controllers
             await _blog.SaveFilesToDiskAsync(newPost);
             //  3   Update any changes from SaveFileToDiskAsync()
             await _blog.UpdatePostAsync(newPost);
+
 
 
             //  Update post media
@@ -187,29 +185,13 @@ namespace Web.Controllers
 
             existing.IsPublished = post.IsPublished;
             existing.Content = post.Content.Trim();
-            existing.Excerpt = post.Excerpt.Trim();
+            existing.Excerpt = PostHelpers.ShortenAndFormatText(post.Excerpt.Trim(), _excerptMaxLength);
             existing.LastModified = DateTime.UtcNow;
-
-            var tagsAsString = string.Join(", ", existing.Tags.Select(x => x.TagName));
 
             var oldMedia = await _blogContext.PostMedias
                 .AsNoTracking()
                 .Where(x => x.PostId == existing.Id)
                 .ToListAsync();
-
-            // only call if new post, we can check is post.PostCoverPhoto
-            /*if (string.IsNullOrEmpty(existing.PostCoverPhoto))
-            {
-                var newCoverPhoto = HttpContext.Request.Form.Files[0];
-                if (newCoverPhoto.Length <= 0)
-                {
-                    ModelState.AddModelError("", "Cover photo missing!");
-                    return View("Edit", post);
-                }
-                existing.PostCoverPhoto = _blog.SetCoverPhotoNames(existing.Id);
-                await _blog.SaveCoverPhoto(existing.Id, newCoverPhoto);
-            }*/
-
 
             //  1.  Save Files to disk
             await _blog.SaveFilesToDiskAsync(existing);
@@ -245,12 +227,12 @@ namespace Web.Controllers
             var newTags = await formTags.Split(',').ToList().ProcessTagsAsync(existing.Id);
             var oldTags = await _blog.GetPostTags(post.Id);
             // tags equal? take no action
-            if (!newTags.SequenceEqual(oldTags))
+            if (!newTags.SequenceEqual(oldTags, new DefaultPostTagComparer()))
             {
                 // delete old tags
                 foreach (var t in oldTags)
                 {
-                    await _blog.DeletePostTagAsync(t.TagId);
+                    await _blog.DeletePostTagAsync(t.Id);
                 }
 
                 //  add new tags
@@ -263,24 +245,6 @@ namespace Web.Controllers
                 }
             }
 
-            //  Tags
-            //  has tags, add them
-            /*if (!string.IsNullOrEmpty(formTags))
-            {
-                var tags = new List<PostTag>();
-                if (!string.IsNullOrEmpty(formTags))
-                {
-                    tags = await formTags.Split(',').ToList().ProcessTagsAsync(existing.Id);
-                    if (tags.Any())
-                    {
-                        foreach (var t in tags)
-                        {
-                            await _blog.SavePostTagAsync(t);
-                        }
-                    }
-                }
-            }
-            */
 
             var redirectLink = $"/Console/BlogPreview/{post.Id}";
             return Redirect(redirectLink);
